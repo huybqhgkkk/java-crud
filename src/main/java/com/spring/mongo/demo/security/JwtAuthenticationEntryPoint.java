@@ -19,11 +19,9 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
                          HttpServletResponse response,
                          AuthenticationException authException) throws IOException, ServletException {
 
-        // Trả về lỗi 401 (Unauthorized) nếu không có xác thực
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType("application/json");
 
-        // Gửi thông báo lỗi JSON về client
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.writeValue(response.getWriter(), "Unauthorized Access");
     }

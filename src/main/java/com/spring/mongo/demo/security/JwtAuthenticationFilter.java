@@ -30,11 +30,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         try {
-            // Lấy token từ tiêu đề của request
             String jwt = getJwtFromRequest(request);
 
             if (jwt != null && jwtTokenProvider.validateToken(jwt)) {
-                // Nếu token hợp lệ, lấy thông tin username từ token và xác thực
                 String username = jwtTokenProvider.getUsernameFromToken(jwt);
 
                 UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
@@ -44,7 +42,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (ExpiredJwtException | MalformedJwtException | SignatureException | IllegalArgumentException ex) {
-            // Xử lý các exception nếu cần thiết
         }
 
         filterChain.doFilter(request, response);
